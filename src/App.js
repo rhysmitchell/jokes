@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
+import JokeForm from './components/JokeForm'
+import jokeService from './services/jokes'
 import './App.css';
 
-function App() {
+const App = () => {
+  const [jokeIncrement, setJokeIncrement] = useState(0);
+  const [joke, setJoke] = useState({});
+
+  useEffect(() => {
+    jokeService.getRandomJoke().then(joke => setJoke(joke))
+  }, [jokeIncrement])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <JokeForm
+            joke={joke}
+            jokeIncrement={jokeIncrement}
+            setJokeIncrement={setJokeIncrement}
+          />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
